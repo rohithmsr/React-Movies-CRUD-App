@@ -1,0 +1,22 @@
+runtime: nodejs16
+env: standard
+# We will be using a standard environment and 
+# an F1 instance as these are covered by GCP’s free quota
+instance_class: F1
+# The above file tells Google Cloud to upload all the contents 
+# inside the build folder and point any incoming request 
+# at the root to build/index.html
+handlers:
+  # Serve all static files with url ending with a file extension
+  - url: /(.*\..+)$
+    static_files: build/\1
+    upload: build/(.*\..+)$
+  # Catch all handler to index.html
+  - url: /.*
+    static_files: build/index.html
+    upload: build/index.html
+automatic_scaling:
+  min_idle_instances: automatic
+  max_idle_instances: automatic
+  min_pending_latency: automatic
+  max_pending_latency: automatic
